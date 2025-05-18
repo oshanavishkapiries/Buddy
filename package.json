@@ -1,0 +1,21 @@
+{
+  "name": "buddy",
+  "version": "1.0.0",
+  "description": "Terminal GUI automation tool with LinkedIn automation features",
+  "main": "index.js",
+  "scripts": {
+    "start": "node cli.js",
+    "setup": "node setup.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "puppeteer-core": "^24.8.2",
+    "blessed": "^0.1.81",
+    "puppeteer": "^21.0.0",
+    "node-cron": "^3.0.3",
+    "chalk": "^4.1.2",
+    "inquirer": "^8.2.5"
+  }
+}
