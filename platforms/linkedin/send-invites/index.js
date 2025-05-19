@@ -1,18 +1,16 @@
 const { initializeBrowser } = require('../../../utils/browser');
 const { setCookies } = require('../../../utils/cookies');
 const logger = require('../../../utils/logger');
-
-const { navigateToMyNetwork } = require('../functions/navigation');
-const { acceptAllInvitations } = require('../functions/invitations');
-
+const { sendInvitesToFollowers } = require('./actions');
 
 /**
- * Starts the LinkedIn automation process
+ * Starts the LinkedIn connection request automation process
+ * @param {string} profileUrl - The LinkedIn profile URL to get followers from
  */
-async function startLinkedInAutomation() {
+async function startLinkedInInviteAutomation(profileUrl) {
     let browser;
     try {
-        logger.info('Starting LinkedIn automation...');
+        logger.info('Starting LinkedIn invite automation...');
 
         // Initialize browser
         browser = await initializeBrowser();
@@ -33,15 +31,12 @@ async function startLinkedInAutomation() {
 
         await new Promise(resolve => setTimeout(resolve, 3000));
 
-        // Navigate to My Network page
-        await navigateToMyNetwork(page);
+        // Send invites to followers
+        await sendInvitesToFollowers(page, profileUrl);
 
-        // Accept invitations
-        await acceptAllInvitations(page);
-
-        logger.success('LinkedIn automation completed successfully!');
+        logger.success('LinkedIn invite automation completed successfully!');
     } catch (error) {
-        logger.error('LinkedIn automation failed:', error);
+        logger.error('LinkedIn invite automation failed:', error);
         throw error;
     } finally {
         if (browser) {
@@ -51,5 +46,5 @@ async function startLinkedInAutomation() {
 }
 
 module.exports = {
-    startLinkedInAutomation
+    startLinkedInInviteAutomation
 }; 

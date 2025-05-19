@@ -1,4 +1,5 @@
 const logger = require('../../../utils/logger');
+const selectors = require('../selectors/invite-accept');
 
 // Helper function to create a delay
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -129,13 +130,13 @@ async function acceptAllInvitations(page) {
         const MAX_LOAD_MORE_ATTEMPTS = 10;
 
         while (hasMoreInvitations && loadMoreAttempts < MAX_LOAD_MORE_ATTEMPTS) {
-            // Wait for any accept buttons to be visible - specifically look for Accept buttons
-            const acceptButtons = await page.$$('button[data-view-name="invitation-action"][aria-label^="Accept"]');
+            // Wait for any accept buttons to be visible
+            const acceptButtons = await page.$$(selectors.acceptButton);
 
             if (acceptButtons.length === 0) {
                 logger.info('No accept buttons found on current view');
 
-                // Try to find the "Load more" button using text content
+                // Try to find the "Load more" button
                 const loadMoreButton = await findButtonByText(page, 'Load more');
 
                 if (loadMoreButton) {
@@ -151,7 +152,7 @@ async function acceptAllInvitations(page) {
                     await setupDesktopViewAndScroll(page);
 
                     // Check if we actually loaded more buttons
-                    const newButtons = await page.$$('button[data-view-name="invitation-action"][aria-label^="Accept"]');
+                    const newButtons = await page.$$(selectors.acceptButton);
                     if (newButtons.length === 0) {
                         logger.info('No new invitations loaded after clicking "Load more"');
                         if (loadMoreAttempts >= MAX_LOAD_MORE_ATTEMPTS) {

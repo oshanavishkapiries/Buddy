@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
-const { startLinkedInAutomation } = require('./platforms/linkedin/actions/invite-accept');
+const { startLinkedInAutomation } = require('./platforms/linkedin/invite-accept');
+const { startLinkedInInviteAutomation } = require('./platforms/linkedin/send-invites');
 
 async function showMainMenu() {
     const { platform } = await inquirer.prompt([
@@ -26,6 +27,7 @@ async function showPlatformMenu(platform) {
     const menuOptions = {
         linkedin: [
             { name: 'Accept Invitations', value: 'accept_invitations' },
+            { name: 'Send Connection Requests to Followers', value: 'send_invites' },
             { name: 'Back to Main Menu', value: 'back' }
         ]
     };
@@ -53,6 +55,17 @@ async function handlePlatformAction(platform, action) {
                 switch (action) {
                     case 'accept_invitations':
                         await startLinkedInAutomation();
+                        break;
+                    case 'send_invites':
+                        const { profileUrl } = await inquirer.prompt([
+                            {
+                                type: 'input',
+                                name: 'profileUrl',
+                                message: 'Enter the LinkedIn profile URL to get followers from:',
+                                validate: input => input.includes('linkedin.com/in/') ? true : 'Please enter a valid LinkedIn profile URL'
+                            }
+                        ]);
+                        await startLinkedInInviteAutomation(profileUrl);
                         break;
                 }
                 break;

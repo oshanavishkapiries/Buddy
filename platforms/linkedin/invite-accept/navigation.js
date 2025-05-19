@@ -1,4 +1,5 @@
 const logger = require('../../../utils/logger');
+const selectors = require('../selectors/invite-accept');
 
 /**
  * Navigates to the My Network page
@@ -9,11 +10,11 @@ async function navigateToMyNetwork(page) {
         logger.info('Starting LinkedIn navigation...');
 
         logger.progress('Looking for My Network link...');
-        await page.waitForSelector('a.global-nav__primary-link[href*="mynetwork"]', { timeout: 10000 });
+        await page.waitForSelector(selectors.myNetworkLink, { timeout: 10000 });
         logger.success('Found My Network link');
 
         logger.action('Clicking My Network link...');
-        await page.click('a.global-nav__primary-link[href*="mynetwork"]');
+        await page.click(selectors.myNetworkLink);
         logger.success('Clicked My Network link');
 
         logger.progress('Waiting for navigation to complete...');
@@ -31,11 +32,11 @@ async function navigateToMyNetwork(page) {
         await new Promise(resolve => setTimeout(resolve, 3000));
 
         logger.progress('Looking for "Show all" link...');
-        await page.waitForSelector('a[href*="invitation-manager"]', { timeout: 10000 });
+        await page.waitForSelector(selectors.showAllLink, { timeout: 10000 });
         logger.success('Found "Show all" link');
 
         logger.action('Clicking "Show all" link...');
-        await page.click('a[href*="invitation-manager"]');
+        await page.click(selectors.showAllLink);
         logger.success('Clicked "Show all" link');
 
         logger.progress('Waiting for invitation manager page to load...');
