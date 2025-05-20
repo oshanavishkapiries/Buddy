@@ -1,0 +1,61 @@
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import dotenv from 'dotenv';
+
+import { userRouter } from './routes/user.routes.js';
+import database from './config/database.js';
+import { errorHandler } from './middleware/error.middleware.js';
+import { successResponse, HTTP_STATUS } from './utils/response.utils.js';
+
+// Load environment variables
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(cors());
+app.use(helmet());
+app.use(morgan('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Routes
+app.use('/api/users', userRouter);
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+    return successResponse(res, {
+        message: 'Server is running'
+    });
+});
+
+// Error handling middleware
+app.use(errorHandler);
+
+// Start server
+const server = app.listen(PORT, async () => {
+    await database.connect();
+    console.log(`Server is running on port ${PORT}`);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', async () => {
+    console.log('SIGTERM signal received: closing HTTP server');
+    await database.disconnect();
+    server.close(() => {
+        console.log('HTTP server closed');
+        process.exit(0);
+    });
+});
+
+process.on('SIGINT', async () => {
+    console.log('SIGINT signal received: closing HTTP server');
+    await database.disconnect();
+    server.close(() => {
+        console.log('HTTP server closed');
+        process.exit(0);
+    });
+}); 

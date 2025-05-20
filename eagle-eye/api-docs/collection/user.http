@@ -1,0 +1,51 @@
+@baseUrl = {{$dotenv API_BASE_URL}}
+@port = {{$dotenv API_PORT}}
+@host = {{baseUrl}}:{{port}}
+@authToken = {{login.response.body.data.token}}
+
+### Register a new user
+POST {{host}}/api/users/register
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "testpassword123",
+    "reset_password_Q": "What was the name of your first pet",
+    "reset_password_A": "kitty"
+}
+
+### Login user
+# @name login
+POST {{host}}/api/users/login
+Content-Type: application/json
+
+{
+    "email": "updated@example.com",
+    "password": "testpassword456"
+}
+
+### Get user profile
+GET {{host}}/api/users/profile
+Authorization: Bearer {{authToken}}
+
+### Update user profile
+PUT {{host}}/api/users/profile
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "email": "updated@example.com",
+    "reset_password_Q": "What is your mother's maiden name?",
+    "reset_password_A": "Smith"
+}
+
+### Change password
+PUT {{host}}/api/users/change-password
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "currentPassword": "testpassword123",
+    "newPassword": "testpassword456"
+}
+

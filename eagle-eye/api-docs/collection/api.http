@@ -1,0 +1,7 @@
+@baseUrl = {{$dotenv API_BASE_URL}}
+@port = {{$dotenv API_PORT}}
+@host = {{baseUrl}}:{{port}}
+
+### Health Check
+GET {{host}}/health
+Accept: application/json
