@@ -27,7 +27,6 @@ export function SignupForm({
     handleSubmit,
     formState: { errors },
     setValue,
-    watch,
   } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
   });
@@ -51,7 +50,7 @@ export function SignupForm({
               </div>
               <span className="sr-only">{generalData.title}</span>
             </a>
-            <h1 className="text-xl font-bold">{generalData.title}</h1>
+            <h1 className="text-xl font-bold uppercase">{generalData.title}</h1>
             <div className="text-center text-sm">
               Already have an account?{" "}
               <Link href="/auth/login" className="underline underline-offset-4">

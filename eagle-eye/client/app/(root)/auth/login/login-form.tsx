@@ -41,7 +41,7 @@ export function LoginForm({
               </div>
               <span className="sr-only">{generalData.title}</span>
             </Link>
-            <h1 className="text-xl font-bold">{generalData.title}</h1>
+            <h1 className="text-xl font-bold uppercase">{generalData.title}</h1>
             <div className="text-center text-sm">
               Don&apos;t have an account?{" "}
               <Link

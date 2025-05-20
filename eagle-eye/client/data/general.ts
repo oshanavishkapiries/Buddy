@@ -5,4 +5,5 @@ export const generalData: GeneralData = {
   description:
     "Eagle Eye is a platform for monitoring and analyzing your website's performance.",
   logo: "/logo.png",
+  version: "1.0.0",
 };

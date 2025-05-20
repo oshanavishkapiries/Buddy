@@ -1,9 +1,10 @@
+import { cn } from '@/lib/utils'
 import { ScanEye } from 'lucide-react'
 import React from 'react'
 
-const Logo = () => {
+const Logo = ({ className }: { className?: string }) => {
   return (
-    <ScanEye className='size-6' />
+    <ScanEye className={cn('size-6', className)} />
   )
 }
 
