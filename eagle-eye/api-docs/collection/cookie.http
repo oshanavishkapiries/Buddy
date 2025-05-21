@@ -183,10 +183,21 @@ Authorization: Bearer {{authToken}}
 }
 
 ### Get Cookie
-GET {{host}}/api/cookies/get
+GET {{host}}/api/cookies/get?provider=Instagram
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+### Update Cookie
+PUT {{host}}/api/cookies/update
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-    "provider": "Intergram"
+    "provider": "Intergram",
+    "cookies": []
 }
+
+### Delete Cookie
+DELETE {{host}}/api/cookies/delete?provider=Intergram
+Content-Type: application/json
+Authorization: Bearer {{authToken}}

@@ -22,7 +22,7 @@ export const useRegisterUser = () => {
       router.push("/auth/login");
     },
     onError: (error: any) => {
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message);
     },
   });
 };
@@ -43,7 +43,7 @@ export const useLoginUser = () => {
       router.push("/dashboard");
     },
     onError: (error: any) => {
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message);
     },
   });
 };
@@ -59,7 +59,7 @@ export const useResetPassword = () => {
       router.push("/auth/login");
     },
     onError: (error: any) => {
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message);
     },
   });
 };

@@ -9,26 +9,49 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { useDeleteCookie, useGetCookie } from "@/hooks/useCookie";
+import { Loader2, Trash } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function CookieDialog({
   children,
   provider,
+  isLoading,
+  isUpdateLoading,
+  open,
+  setOpen,
   onSave,
 }: {
   children: React.ReactNode;
   provider: string;
-  onSave?: (cookies: string) => void;
+  onSave?: (cookies: any[]) => void;
+  isLoading?: boolean;
+  isUpdateLoading?: boolean;
+  open?: boolean;
+  setOpen: (open: boolean) => void;
 }) {
   const [cookieText, setCookieText] = useState("");
+  const { data: cookies } = useGetCookie(provider);
+  const { mutate: deleteCookie, isPending: isDeletePending } = useDeleteCookie(setOpen);
+
+  useEffect(() => {
+    if (cookies) {
+      setCookieText(JSON.stringify(cookies?.data?.cookies, null, 2));
+    }
+  }, [cookies, open]);
 
   const handleSave = () => {
-    console.log("Raw cookie text:", cookieText);
-    onSave?.(cookieText);
+    const cookies = JSON.parse(cookieText);
+    onSave?.(cookies);
+  };
+
+  const handleDelete = () => {
+    deleteCookie({ provider });
+    setCookieText("");
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
@@ -42,9 +65,24 @@ export default function CookieDialog({
             placeholder="Paste your cookies data here..."
             className="min-h-[150px] font-mono text-sm"
           />
-          <div className="flex justify-end">
-            <Button type="button" onClick={handleSave}>
-              Save Cookies
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={handleDelete}>
+              {isDeletePending ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                <Trash className="w-4 h-4 text-red-500" />
+              )}
+            </Button>
+            <Button
+              type="button"
+              onClick={handleSave}
+              disabled={isLoading || isUpdateLoading}
+            >
+              {isLoading || isUpdateLoading ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                "Save Cookies"
+              )}
             </Button>
           </div>
         </div>

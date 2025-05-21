@@ -1,10 +1,30 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { CirclePlus, Cookie } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CookieDialog from "./CookieDialog";
 import { Provider } from "@/types";
+import {
+  useCreateCookie,
+  useUpdateCookie,
+  useGetCookie,
+} from "@/hooks/useCookie";
 
 const CookiesPage = () => {
+  const [open, setOpen] = useState(false);
+  const { mutate: createCookie, isPending } = useCreateCookie(setOpen);
+  const { mutate: updateCookie, isPending: isUpdatePending } =
+    useUpdateCookie(setOpen);
+  const { data: existingCookies } = useGetCookie(Provider.Instagram);
+
+  const handleSave = (cookies: any[]) => {
+    if (existingCookies?.data?.cookies) {
+      updateCookie({ provider: Provider.Instagram, cookies: cookies });
+    } else {
+      createCookie({ provider: Provider.Instagram, cookies: cookies });
+    }
+  };
+
   return (
     <div className="w-full flex flex-col gap-2">
       <div className="dark bg-muted text-foreground px-4 py-3">
@@ -29,7 +49,14 @@ const CookiesPage = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
-        <CookieDialog provider={Provider.Instagram}>
+        <CookieDialog
+          provider={Provider.Instagram}
+          onSave={handleSave}
+          isLoading={isPending}
+          isUpdateLoading={isUpdatePending}
+          open={open}
+          setOpen={setOpen}
+        >
           <Button variant="outline" className="flex flex-row gap-2">
             Intergram
             <CirclePlus />
