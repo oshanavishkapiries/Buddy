@@ -95,6 +95,20 @@ export function SignupForm({
                 )}
               </div>
               <div className="space-y-2">
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="********"
+                  {...register("confirmPassword")}
+                />
+                {errors.confirmPassword && (
+                  <p className="text-sm text-red-500">
+                    {errors.confirmPassword.message}
+                  </p>
+                )}
+              </div>
+              <div className="space-y-2">
                 <Label htmlFor="resetQuestion">Security Question</Label>
                 <Select
                   onValueChange={(value) => setValue("resetQuestion", value)}
