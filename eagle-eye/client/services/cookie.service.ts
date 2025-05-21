@@ -20,3 +20,9 @@ export const deleteCookie = async (data: DeleteCookieRequest) => {
   const response = await axiosClient.delete("/api/cookies/delete", { params: data });
   return response.data;
 };
+
+export const getCookiesProvider = async () => {
+  const response = await axiosClient.get("/api/cookies/get-provider");
+  return response.data;
+};
+

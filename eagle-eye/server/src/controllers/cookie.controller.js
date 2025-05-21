@@ -1,4 +1,4 @@
-import { createCookie, getCookie, updateCookie, deleteCookie } from '../service/cookie.service.js';
+import { createCookie, getCookie, updateCookie, deleteCookie, getCookiesProvider } from '../service/cookie.service.js';
 import { AppError, catchAsync } from '../middleware/error.middleware.js';
 import { successResponse, errorResponse, HTTP_STATUS } from '../utils/response.utils.js';
 
@@ -70,3 +70,14 @@ export const deleteCookieController = catchAsync(async (req, res) => {
     const cookie = await deleteCookie(userId, provider);
     successResponse(res, cookie, HTTP_STATUS.OK);
 });
+
+export const getCookiesProviderController = catchAsync(async (req, res) => {
+    const userId = req.user.userId;
+    const cookies = await getCookiesProvider(userId);
+    successResponse(res, {
+        statusCode: HTTP_STATUS.OK,
+        message: 'Cookies provider fetched successfully',
+        data: cookies
+    });
+});
+

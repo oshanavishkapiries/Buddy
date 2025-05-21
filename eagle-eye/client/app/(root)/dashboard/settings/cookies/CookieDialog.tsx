@@ -1,4 +1,5 @@
 "use client";
+import StatusBadge from "@/components/common/StatusBadge";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,37 +13,37 @@ import { Textarea } from "@/components/ui/textarea";
 import { useDeleteCookie, useGetCookie } from "@/hooks/useCookie";
 import { Loader2, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function CookieDialog({
-  children,
+  isStatusLoading,
+  status,
   provider,
-  isLoading,
-  isUpdateLoading,
-  open,
-  setOpen,
   onSave,
 }: {
-  children: React.ReactNode;
+  isStatusLoading: boolean;
+  status: boolean;
   provider: string;
   onSave?: (cookies: any[]) => void;
-  isLoading?: boolean;
-  isUpdateLoading?: boolean;
-  open?: boolean;
-  setOpen: (open: boolean) => void;
 }) {
   const [cookieText, setCookieText] = useState("");
-  const { data: cookies } = useGetCookie(provider);
-  const { mutate: deleteCookie, isPending: isDeletePending } = useDeleteCookie(setOpen);
+  const { data: cookies, isLoading } = useGetCookie(provider);
+  const { mutate: deleteCookie, isPending: isDeletePending } =
+    useDeleteCookie();
 
   useEffect(() => {
     if (cookies) {
       setCookieText(JSON.stringify(cookies?.data?.cookies, null, 2));
     }
-  }, [cookies, open]);
+  }, [cookies]);
 
   const handleSave = () => {
-    const cookies = JSON.parse(cookieText);
-    onSave?.(cookies);
+    try {
+      const cookies = JSON.parse(cookieText);
+      onSave?.(cookies);
+    } catch (error) {
+      toast.error("Invalid cookie format. Please check your input.");
+    }
   };
 
   const handleDelete = () => {
@@ -51,8 +52,25 @@ export default function CookieDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          className={`flex flex-row items-center justify-between gap-2 w-full h-[60px] ${
+            isStatusLoading ? "opacity-50" : ""
+          }`}
+        >
+          {provider}
+          {isStatusLoading ? (
+            <Loader2 className="animate-spin size-3" />
+          ) : (
+            <StatusBadge
+              color={status ? "bg-emerald-500" : "bg-red-500"}
+              text={status ? "Added" : "Empty"}
+            />
+          )}
+        </Button>
+      </DialogTrigger>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>Manage Cookies for {provider}</DialogTitle>
@@ -66,7 +84,11 @@ export default function CookieDialog({
             className="min-h-[150px] font-mono text-sm"
           />
           <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={handleDelete}>
+            <Button
+              variant="outline"
+              onClick={handleDelete}
+              disabled={isDeletePending}
+            >
               {isDeletePending ? (
                 <Loader2 className="animate-spin" />
               ) : (
@@ -76,9 +98,9 @@ export default function CookieDialog({
             <Button
               type="button"
               onClick={handleSave}
-              disabled={isLoading || isUpdateLoading}
+              disabled={isLoading || isDeletePending}
             >
-              {isLoading || isUpdateLoading ? (
+              {isLoading ? (
                 <Loader2 className="animate-spin" />
               ) : (
                 "Save Cookies"

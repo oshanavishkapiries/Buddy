@@ -6,8 +6,9 @@ export interface GeneralData {
 }
 
 export enum Provider {
-  Telegram = "Telegram",
   Instagram = "Instagram",
-  Facebook = "Facebook",
-  Twitter = "Twitter",
+  // Facebook = "Facebook",
+  // Twitter = "Twitter",
+  // LinkedIn = "LinkedIn",
+  // Telegram = "Telegram",
 }
