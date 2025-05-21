@@ -31,6 +31,21 @@ export const errorHandler = (err, req, res, next) => {
         });
     }
 
+    // add common jwt error and mongo error
+    if (err.name === 'JsonWebTokenError') {
+        return errorResponse(res, {
+            statusCode: HTTP_STATUS.UNAUTHORIZED,
+            message: 'Invalid token'
+        });
+    }
+
+    if (err.name === 'MongoServerError') {
+        return errorResponse(res, {
+            statusCode: HTTP_STATUS.BAD_REQUEST,
+            message: 'Duplicate field value entered'
+        });
+    }
+
     // Programming or unknown errors
     console.error('ERROR 💥', err);
     return errorResponse(res, {
