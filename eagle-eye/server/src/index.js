@@ -5,6 +5,8 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 
 import database from './config/database.js';
+import { configureSocket } from './config/socket.config.js';
+import SocketHandler from './modules/socket/socket.handler.js';
 import { errorHandler } from './middleware/error.middleware.js';
 import { successResponse } from './utils/response.utils.js';
 
@@ -43,6 +45,10 @@ const server = app.listen(PORT, async () => {
     await database.connect();
     console.log(`Server is running on port ${PORT}`);
 });
+
+// Initialize Socket.IO
+const io = configureSocket(server);
+new SocketHandler(io);
 
 // Graceful shutdown
 process.on('SIGTERM', async () => {
