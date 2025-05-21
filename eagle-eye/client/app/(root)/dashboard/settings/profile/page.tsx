@@ -1,9 +1,8 @@
-import React from 'react'
+import UnderDev from "@/components/common/UnderDev";
+import React from "react";
 
-const ProfilePage = () => {
-  return (
-    <div>ProfilePage</div>
-  )
-}
+const profilePage = () => {
+  return <UnderDev />;
+};
 
-export default ProfilePage
+export default profilePage;

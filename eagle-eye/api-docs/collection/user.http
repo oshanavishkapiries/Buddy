@@ -21,7 +21,7 @@ Content-Type: application/json
 
 {
     "email": "updated@example.com",
-    "password": "testpassword456"
+    "password": "Testpassword456"
 }
 
 ### Get user profile
@@ -45,7 +45,18 @@ Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-    "currentPassword": "testpassword123",
-    "newPassword": "testpassword456"
+    "currentPassword": "testpassword456",
+    "newPassword": "Testpassword456"
+}
+
+### Reset password
+POST {{host}}/api/users/reset-password
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "reset_password_Q": "What was the name of your first pet",
+    "reset_password_A": "kitty",
+    "newPassword": "Testpassword456"
 }
 

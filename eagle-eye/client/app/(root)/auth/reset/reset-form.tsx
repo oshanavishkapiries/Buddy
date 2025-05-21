@@ -9,7 +9,7 @@ import Logo from "@/components/common/Logo";
 import { generalData } from "@/data/general";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signupSchema, type SignupFormData } from "./validations";
+import { resetSchema, type ResetFormData } from "./validations";
 import {
   Select,
   SelectContent,
@@ -17,10 +17,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useRegisterUser } from "@/hooks/useUser";
 import { Loader2 } from "lucide-react";
+import { useResetPassword } from "@/hooks/useUser";
 
-export function SignupForm({
+export function ResetForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
@@ -29,18 +29,18 @@ export function SignupForm({
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm<SignupFormData>({
-    resolver: zodResolver(signupSchema),
+  } = useForm<ResetFormData>({
+    resolver: zodResolver(resetSchema),
   });
 
-  const { mutate: registerUser, isPending } = useRegisterUser();
+  const { mutate: resetPassword, isPending } = useResetPassword();
 
-  const onSubmit = (data: SignupFormData) => {
-    registerUser({
+  const onSubmit = (data: ResetFormData) => {
+    resetPassword({
       email: data.email,
-      password: data.password,
       reset_password_Q: data.resetQuestion,
       reset_password_A: data.resetAnswer,
+      newPassword: data.newPassword,
     });
   };
 
@@ -60,7 +60,7 @@ export function SignupForm({
             </a>
             <h1 className="text-xl font-bold uppercase">{generalData.title}</h1>
             <div className="text-center text-sm">
-              Already have an account?{" "}
+              Remember your password?{" "}
               <Link href="/auth/login" className="underline underline-offset-4">
                 Login
               </Link>
@@ -78,20 +78,6 @@ export function SignupForm({
                 />
                 {errors.email && (
                   <p className="text-sm text-red-500">{errors.email.message}</p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="********"
-                  {...register("password")}
-                />
-                {errors.password && (
-                  <p className="text-sm text-red-500">
-                    {errors.password.message}
-                  </p>
                 )}
               </div>
               <div className="space-y-2">
@@ -134,14 +120,28 @@ export function SignupForm({
                   </p>
                 )}
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="newPassword">New Password</Label>
+                <Input
+                  id="newPassword"
+                  type="password"
+                  placeholder="Enter your new password"
+                  {...register("newPassword")}
+                />
+                {errors.newPassword && (
+                  <p className="text-sm text-red-500">
+                    {errors.newPassword.message}
+                  </p>
+                )}
+              </div>
             </div>
             {isPending ? (
               <Button type="submit" className="w-full" disabled>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               </Button>
             ) : (
               <Button type="submit" className="w-full">
-                Sign Up
+                Reset Password
               </Button>
             )}
           </div>

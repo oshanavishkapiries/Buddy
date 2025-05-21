@@ -131,3 +131,32 @@ export const changePassword = catchAsync(async (req, res) => {
         message: 'Password changed successfully'
     });
 });
+
+// Reset password
+export const resetPassword = catchAsync(async (req, res) => {
+    const { email, reset_password_Q, reset_password_A, newPassword } = req.body;
+
+    const user = await getUserByEmail(email);
+
+    console.table(user);
+
+    if (!user) {
+        throw new AppError('User not found', HTTP_STATUS.NOT_FOUND);
+    }
+
+    if (reset_password_Q !== user.reset_password_Q) {
+        throw new AppError('Reset password question is incorrect', HTTP_STATUS.UNAUTHORIZED);
+    }
+
+    if (reset_password_A !== user.reset_password_A) {
+        throw new AppError('Reset password answer is incorrect', HTTP_STATUS.UNAUTHORIZED);
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    return successResponse(res, {
+        message: 'Password reset successfully'
+    });
+});
+

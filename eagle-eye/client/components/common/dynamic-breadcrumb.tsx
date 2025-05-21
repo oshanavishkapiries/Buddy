@@ -59,7 +59,7 @@ export function DynamicBreadcrumb() {
                 {isLast ? (
                   <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink href={crumb.path}>
+                  <BreadcrumbLink href={crumb.path}>  
                     {crumb.label}
                   </BreadcrumbLink>
                 )}

@@ -9,6 +9,8 @@ import { generalData } from "@/data/general";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginFormData } from "./validations";
+import { useLoginUser } from "@/hooks/useUser";
+import { Loader2 } from "lucide-react";
 
 export function LoginForm({
   className,
@@ -22,9 +24,10 @@ export function LoginForm({
     resolver: zodResolver(loginSchema),
   });
 
+  const { mutate: login, isPending } = useLoginUser();
+
   const onSubmit = (data: LoginFormData) => {
-    console.log(data);
-    // Handle login logic here
+    login(data);
   };
 
   return (
@@ -81,9 +84,18 @@ export function LoginForm({
                 )}
               </div>
             </div>
-            <Button type="submit" className="w-full">
-              Login
-            </Button>
+            {isPending ? (
+              <Button type="submit" className="w-full" disabled>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              </Button>
+            ) : (
+              <Button type="submit" className="w-full">
+                Login
+              </Button>
+            )}
+            <Link href="/auth/reset" className="text-center text-sm text-muted-foreground">
+              Forgot Password?
+            </Link>
           </div>
         </div>
       </form>

@@ -1,23 +1,20 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+const publicPaths = ["/auth/login", "/auth/signup", "/auth/reset"];
 
-const publicPaths = ["/auth/login", "/auth/signup"];
-
-export function middleware(request: NextRequest) {  
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-
   const isPublicPath = publicPaths.some((path) => pathname.startsWith(path));
-  const token = request.cookies.get("auth-token")?.value;
+  const token = request.cookies.get("authToken")?.value;
 
-
-  // if (isPublicPath && token) {
-  //   return NextResponse.redirect(new URL("/", request.url));
-  // }
-  // if (!isPublicPath && !token) {
-  //   return NextResponse.redirect(new URL("/auth/login", request.url));
-  // }
+  if (isPublicPath && token) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+  if (!isPublicPath && !token) {
+    return NextResponse.redirect(new URL("/auth/login", request.url));
+  }
 
   return NextResponse.next();
 }

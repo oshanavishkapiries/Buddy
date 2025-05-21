@@ -1,7 +1,8 @@
+import UnderDev from "@/components/common/UnderDev";
 import React from "react";
 
 const DashBoardPage = () => {
-  return <div className="w-full h-[1500px]">DashBoardPage</div>;
+  return <UnderDev />;
 };
 
 export default DashBoardPage;
