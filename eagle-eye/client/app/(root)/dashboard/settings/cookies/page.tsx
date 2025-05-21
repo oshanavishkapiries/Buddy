@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { CirclePlus, Cookie } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CookieDialog from "./CookieDialog";
 import { Provider } from "@/types";
 import {
