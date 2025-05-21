@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { CirclePlus, Cookie } from "lucide-react";
 import React from "react";
 import CookieDialog from "./CookieDialog";
+import { Provider } from "@/types";
 
 const CookiesPage = () => {
   return (
@@ -28,7 +29,7 @@ const CookiesPage = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
-        <CookieDialog provider="Intergram">
+        <CookieDialog provider={Provider.Instagram}>
           <Button variant="outline" className="flex flex-row gap-2">
             Intergram
             <CirclePlus />

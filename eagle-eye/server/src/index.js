@@ -4,10 +4,12 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 
-import { userRouter } from './routes/user.routes.js';
 import database from './config/database.js';
 import { errorHandler } from './middleware/error.middleware.js';
-import { successResponse, HTTP_STATUS } from './utils/response.utils.js';
+import { successResponse } from './utils/response.utils.js';
+
+import { userRouter } from './routes/user.routes.js';
+import { cookieRouter } from './routes/cookie.routes.js';
 
 // Load environment variables
 dotenv.config();
@@ -24,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use('/api/users', userRouter);
+app.use('/api/cookies', cookieRouter);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
