@@ -76,6 +76,10 @@ const data = {
           title: "Profile",
           url: "/dashboard/settings/profile",
         },
+        {
+          title: "Cookies",
+          url: "/dashboard/settings/cookies",
+        },
       ],
     },
   ],
