@@ -32,3 +32,11 @@ export const deleteCookie = async (userId, provider) => {
     });
     return cookie;
 };
+
+export const getCookiesProvider = async (userId) => {
+    const cookies = await Cookie.find({
+        user: userId
+    });
+    return cookies.map(cookie => cookie.provider);
+};
+

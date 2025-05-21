@@ -1,7 +1,7 @@
 @baseUrl = {{$dotenv API_BASE_URL}}
 @port = {{$dotenv API_PORT}}
 @host = {{baseUrl}}:{{port}}
-@authToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODJjNmZhMTAxZGM1ZWM2Nzk1OTA5M2MiLCJpYXQiOjE3NDc4MjA4NDQsImV4cCI6MTc0NzkwNzI0NH0.PSBAuHTD65VT7vMf9nVJE0z1WICdtV2YIIZgrikjKyo
+@authToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODJjZmU1MWUxODg3ZTg0NzFkNjgzYWYiLCJpYXQiOjE3NDc4NDYyNzEsImV4cCI6MTc0NzkzMjY3MX0.Ce64LjShFs8TYGyR2e6XDfmO0WE0lAAVrgKyhN3XZXs
 
 ### Create Cookie
 POST {{host}}/api/cookies/create
@@ -199,5 +199,10 @@ Authorization: Bearer {{authToken}}
 
 ### Delete Cookie
 DELETE {{host}}/api/cookies/delete?provider=Intergram
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+### Get Cookies Provider
+GET {{host}}/api/cookies/get-provider
 Content-Type: application/json
 Authorization: Bearer {{authToken}}

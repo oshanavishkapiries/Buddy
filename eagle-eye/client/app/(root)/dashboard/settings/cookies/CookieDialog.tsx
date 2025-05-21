@@ -16,37 +16,33 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function CookieDialog({
+  isStatusLoading,
+  status,
   provider,
-  isLoading,
-  isUpdateLoading,
-  open,
-  setOpen,
   onSave,
 }: {
+  isStatusLoading: boolean;
+  status: boolean;
   provider: string;
   onSave?: (cookies: any[]) => void;
-  isLoading?: boolean;
-  isUpdateLoading?: boolean;
-  open?: boolean;
-  setOpen: (open: boolean) => void;
 }) {
   const [cookieText, setCookieText] = useState("");
-  const { data: cookies } = useGetCookie(provider);
+  const { data: cookies, isLoading } = useGetCookie(provider);
   const { mutate: deleteCookie, isPending: isDeletePending } =
-    useDeleteCookie(setOpen);
+    useDeleteCookie();
 
   useEffect(() => {
     if (cookies) {
       setCookieText(JSON.stringify(cookies?.data?.cookies, null, 2));
     }
-  }, [cookies, open]);
+  }, [cookies]);
 
   const handleSave = () => {
     try {
       const cookies = JSON.parse(cookieText);
       onSave?.(cookies);
     } catch (error) {
-      toast.error("cookies are not valid");
+      toast.error("Invalid cookie format. Please check your input.");
     }
   };
 
@@ -56,17 +52,23 @@ export default function CookieDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog>
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="flex flex-row items-center justify-between gap-2"
+          className={`flex flex-row items-center justify-between gap-2 w-full h-[60px] ${
+            isStatusLoading ? "opacity-50" : ""
+          }`}
         >
           {provider}
-          <StatusBadge
-            color={cookieText?.length > 0 ? "bg-emerald-500" : "bg-red-500"}
-            text={cookieText?.length > 0 ? "Added" : "Empty"}
-          />
+          {isStatusLoading ? (
+            <Loader2 className="animate-spin size-3" />
+          ) : (
+            <StatusBadge
+              color={status ? "bg-emerald-500" : "bg-red-500"}
+              text={status ? "Added" : "Empty"}
+            />
+          )}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-2xl">
@@ -82,7 +84,11 @@ export default function CookieDialog({
             className="min-h-[150px] font-mono text-sm"
           />
           <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={handleDelete}>
+            <Button
+              variant="outline"
+              onClick={handleDelete}
+              disabled={isDeletePending}
+            >
               {isDeletePending ? (
                 <Loader2 className="animate-spin" />
               ) : (
@@ -92,9 +98,9 @@ export default function CookieDialog({
             <Button
               type="button"
               onClick={handleSave}
-              disabled={isLoading || isUpdateLoading}
+              disabled={isLoading || isDeletePending}
             >
-              {isLoading || isUpdateLoading ? (
+              {isLoading ? (
                 <Loader2 className="animate-spin" />
               ) : (
                 "Save Cookies"

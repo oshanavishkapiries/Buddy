@@ -7,22 +7,19 @@ import { Provider } from "@/types";
 import {
   useCreateCookie,
   useUpdateCookie,
-  useGetCookie,
+  useGetCookiesProvider,
 } from "@/hooks/useCookie";
-import StatusBadge from "@/components/common/StatusBadge";
 
 const CookiesPage = () => {
-  const [open, setOpen] = useState(false);
-  const { mutate: createCookie, isPending } = useCreateCookie(setOpen);
-  const { mutate: updateCookie, isPending: isUpdatePending } =
-    useUpdateCookie(setOpen);
-  const { data: existingCookies } = useGetCookie(Provider.Instagram);
+  const { mutate: createCookie } = useCreateCookie();
+  const { mutate: updateCookie } = useUpdateCookie();
+  const { data: cookiesProvider, isLoading } = useGetCookiesProvider();
 
-  const handleSave = (cookies: any[]) => {
-    if (existingCookies?.data?.cookies) {
-      updateCookie({ provider: Provider.Instagram, cookies: cookies });
+  const handleSave = (cookies: any[], provider: Provider) => {
+    if (cookiesProvider?.data?.includes(provider)) {
+      updateCookie({ provider: provider, cookies: cookies });
     } else {
-      createCookie({ provider: Provider.Instagram, cookies: cookies });
+      createCookie({ provider: provider, cookies: cookies });
     }
   };
 
@@ -50,16 +47,15 @@ const CookiesPage = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
-        <CookieDialog
-          provider={Provider.Instagram}
-          onSave={handleSave}
-          isLoading={isPending}
-          isUpdateLoading={isUpdatePending}
-          open={open}
-          setOpen={setOpen}
-        >
-       
-        </CookieDialog>
+        {Object.values(Provider).map((provider) => (
+          <CookieDialog
+            key={provider}
+            provider={provider}
+            status={cookiesProvider?.data?.includes(provider)}
+            isStatusLoading={isLoading}
+            onSave={(cookies) => handleSave(cookies, provider)}
+          />
+        ))}
       </div>
     </div>
   );

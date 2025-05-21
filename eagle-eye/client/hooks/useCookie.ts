@@ -3,18 +3,21 @@ import {
   createCookie,
   deleteCookie,
   getCookie,
+  getCookiesProvider,
   updateCookie,
 } from "../services/cookie.service";
 import { toast } from "sonner";
 
-export const useCreateCookie = (setOpen: (open: boolean) => void) => {
+export const useCreateCookie = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: createCookie,
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       toast.success("Cookie created successfully");
-      setOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["cookies"] });
+      queryClient.invalidateQueries({
+        queryKey: ["cookies", variables.provider],
+      });
+      queryClient.invalidateQueries({ queryKey: ["cookies-provider"] });
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.message);
@@ -24,19 +27,21 @@ export const useCreateCookie = (setOpen: (open: boolean) => void) => {
 
 export const useGetCookie = (provider: string) => {
   return useQuery({
-    queryKey: ["cookies"],
+    queryKey: ["cookies", provider],
     queryFn: () => getCookie({ provider: provider }),
   });
 };
 
-export const useUpdateCookie = (setOpen: (open: boolean) => void) => {
+export const useUpdateCookie = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: updateCookie,
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       toast.success("Cookie updated successfully");
-      setOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["cookies"] });
+      queryClient.invalidateQueries({
+        queryKey: ["cookies", variables.provider],
+      });
+      queryClient.invalidateQueries({ queryKey: ["cookies-provider"] });
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.message);
@@ -44,17 +49,26 @@ export const useUpdateCookie = (setOpen: (open: boolean) => void) => {
   });
 };
 
-export const useDeleteCookie = (setOpen: (open: boolean) => void) => {
+export const useDeleteCookie = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deleteCookie,
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       toast.success("Cookie deleted successfully");
-      setOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["cookies"] });
+      queryClient.invalidateQueries({
+        queryKey: ["cookies", variables.provider],
+      });
+      queryClient.invalidateQueries({ queryKey: ["cookies-provider"] });
     },
     onError: (error: any) => {
       toast.error(error?.response?.data?.message);
     },
+  });
+};
+
+export const useGetCookiesProvider = () => {
+  return useQuery({
+    queryKey: ["cookies-provider"],
+    queryFn: getCookiesProvider,
   });
 };
