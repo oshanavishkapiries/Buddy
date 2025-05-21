@@ -57,7 +57,7 @@ export default class SocketIoClient extends EventEmitter {
     });
   }
 
-  subscribe(event: string, callback: Function) {
+  subscribe(event: string, callback: (arg: any) => void) {
     this.socket?.on(event, (arg) => callback(arg));
   }
 

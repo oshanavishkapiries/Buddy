@@ -42,6 +42,7 @@ export default function CookieDialog({
       const cookies = JSON.parse(cookieText);
       onSave?.(cookies);
     } catch (error) {
+      console.log(error);
       toast.error("Invalid cookie format. Please check your input.");
     }
   };

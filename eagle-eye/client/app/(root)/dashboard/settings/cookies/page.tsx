@@ -1,7 +1,6 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { Cookie } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 import CookieDialog from "./CookieDialog";
 import { Provider } from "@/types";
 import {
