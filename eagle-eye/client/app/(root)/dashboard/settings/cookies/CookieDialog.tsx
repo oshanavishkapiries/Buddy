@@ -1,4 +1,5 @@
 "use client";
+import StatusBadge from "@/components/common/StatusBadge";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,9 +13,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { useDeleteCookie, useGetCookie } from "@/hooks/useCookie";
 import { Loader2, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function CookieDialog({
-  children,
   provider,
   isLoading,
   isUpdateLoading,
@@ -22,7 +23,6 @@ export default function CookieDialog({
   setOpen,
   onSave,
 }: {
-  children: React.ReactNode;
   provider: string;
   onSave?: (cookies: any[]) => void;
   isLoading?: boolean;
@@ -32,7 +32,8 @@ export default function CookieDialog({
 }) {
   const [cookieText, setCookieText] = useState("");
   const { data: cookies } = useGetCookie(provider);
-  const { mutate: deleteCookie, isPending: isDeletePending } = useDeleteCookie(setOpen);
+  const { mutate: deleteCookie, isPending: isDeletePending } =
+    useDeleteCookie(setOpen);
 
   useEffect(() => {
     if (cookies) {
@@ -41,8 +42,12 @@ export default function CookieDialog({
   }, [cookies, open]);
 
   const handleSave = () => {
-    const cookies = JSON.parse(cookieText);
-    onSave?.(cookies);
+    try {
+      const cookies = JSON.parse(cookieText);
+      onSave?.(cookies);
+    } catch (error) {
+      toast.error("cookies are not valid");
+    }
   };
 
   const handleDelete = () => {
@@ -52,7 +57,18 @@ export default function CookieDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          className="flex flex-row items-center justify-between gap-2"
+        >
+          {provider}
+          <StatusBadge
+            color={cookieText?.length > 0 ? "bg-emerald-500" : "bg-red-500"}
+            text={cookieText?.length > 0 ? "Added" : "Empty"}
+          />
+        </Button>
+      </DialogTrigger>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>Manage Cookies for {provider}</DialogTitle>

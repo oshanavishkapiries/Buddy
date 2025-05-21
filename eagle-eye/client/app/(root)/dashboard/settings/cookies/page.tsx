@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { CirclePlus, Cookie } from "lucide-react";
+import { Cookie } from "lucide-react";
 import React, { useState } from "react";
 import CookieDialog from "./CookieDialog";
 import { Provider } from "@/types";
@@ -9,6 +9,7 @@ import {
   useUpdateCookie,
   useGetCookie,
 } from "@/hooks/useCookie";
+import StatusBadge from "@/components/common/StatusBadge";
 
 const CookiesPage = () => {
   const [open, setOpen] = useState(false);
@@ -57,10 +58,7 @@ const CookiesPage = () => {
           open={open}
           setOpen={setOpen}
         >
-          <Button variant="outline" className="flex flex-row gap-2">
-            Intergram
-            <CirclePlus />
-          </Button>
+       
         </CookieDialog>
       </div>
     </div>
