@@ -5,7 +5,7 @@ import { cookies } from "./cookies.js";
 import fs from 'fs';
 
 const { page, network, browser } = await startInstance({
-  url: 'https://www.instagram.com/jackmorris',
+  url: 'https://www.instagram.com/kavihari_haputhanthri',
   cookies,
   monitorNetwork: true,
 });
