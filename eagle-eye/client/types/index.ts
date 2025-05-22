@@ -12,3 +12,16 @@ export enum Provider {
   // LinkedIn = "LinkedIn",
   // Telegram = "Telegram",
 }
+
+export interface SystemData {
+  cpu: number;
+  memory: {
+    total: number;
+    used: number;
+    percent: number;
+  };
+  network: {
+    rx: number;
+    tx: number;
+  };
+}

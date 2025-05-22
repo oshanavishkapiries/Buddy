@@ -4,7 +4,6 @@ import "./globals.css";
 import { generalData } from "@/data/general";
 import { ReactQueryProvider } from "@/lib/react-query/provider";
 import { Toaster } from "sonner";
-import { ProvideSocketIoClient } from "@/providers/SocketIoProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,9 +30,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ReactQueryProvider>
-          <ProvideSocketIoClient>{children}</ProvideSocketIoClient>
-        </ReactQueryProvider>
+        <ReactQueryProvider>{children}</ReactQueryProvider>
         <Toaster />
       </body>
     </html>

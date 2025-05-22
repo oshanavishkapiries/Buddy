@@ -55,7 +55,7 @@ export default function CpuChart({ data }: CpuChartProps) {
   const cpuChange = ((latestCpu - previousCpu) / previousCpu) * 100;
 
   return (
-    <Card className="h-full">
+    <Card className="rounded-sm">
       <CardHeader>
         <CardTitle>CPU Usage</CardTitle>
         <CardDescription>Real-time CPU utilization</CardDescription>

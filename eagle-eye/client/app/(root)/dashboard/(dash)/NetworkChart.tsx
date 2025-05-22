@@ -56,7 +56,7 @@ export default function NetworkChart({ data }: NetworkChartProps) {
   }));
 
   return (
-    <Card>
+    <Card className="rounded-sm">
       <CardHeader>
         <CardTitle>Network Traffic</CardTitle>
         <CardDescription>

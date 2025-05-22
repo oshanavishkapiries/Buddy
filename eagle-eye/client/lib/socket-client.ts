@@ -67,5 +67,6 @@ export default class SocketIoClient extends EventEmitter {
 
   disconnect() {
     this.socket?.disconnect();
+    this.socket = null;
   }
 }

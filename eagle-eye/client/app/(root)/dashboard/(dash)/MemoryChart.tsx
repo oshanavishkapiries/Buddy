@@ -75,7 +75,7 @@ export default function MemoryChart({ data }: MemoryChartProps) {
   }, [chartData]);
 
   return (
-    <Card className="flex flex-col h-full">
+    <Card className="flex flex-col rounded-sm">
       <CardHeader className="items-center pb-0">
         <CardTitle>Memory Usage</CardTitle>
         <CardDescription>Real-time system memory</CardDescription>
