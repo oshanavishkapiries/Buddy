@@ -1,10 +1,9 @@
-// modules/start-instance.js
 import { launchBrowser } from "../../utils/puppeteerUtil.js";
 import { parseCookies } from "../../utils/cookieParser.js";
 
-async function startInstance({ url, cookies = [], monitorNetwork = false }) {
+async function startInstance({ url, cookies = [], monitorNetwork = false, waitUntil = 'networkidle2', timeout = 60000 }) {
   const browser = await launchBrowser({
-    headless: false,
+    headless: true,
     isDesktop: true,
     isMobile: false,
   });
@@ -55,8 +54,8 @@ async function startInstance({ url, cookies = [], monitorNetwork = false }) {
     });
   }
 
-  // Navigate to the target URL
-  await page.goto(url);
+  // Navigate to the target URL with correct options
+  await page.goto(url, { waitUntil, timeout });
 
   return {
     browser,
