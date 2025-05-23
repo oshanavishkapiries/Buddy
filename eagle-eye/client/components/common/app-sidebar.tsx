@@ -3,7 +3,7 @@
 import * as React from "react";
 import {
   Home,
-  Instagram,
+  Workflow,
   // AudioWaveform,
   // BookOpen,
   // Bot,
@@ -57,13 +57,13 @@ const data = {
       icon: Home,
     },
     {
-      title: "Instagram",
+      title: "Flows",
       url: "#",
-      icon: Instagram,
+      icon: Workflow,
       items: [
         {
-          title: "ProfileNet",
-          url: "/dashboard/instagram/profile-net",
+          title: "Recruter Finder",
+          url: "/dashboard/flows/recruter-finder",
         },
       ],
     },
